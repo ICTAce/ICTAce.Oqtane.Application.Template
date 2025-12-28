@@ -31,6 +31,50 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Full history for better analysis
+  
+  sonarqube:
+    name: SonarQube Analysis
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      contents: read
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Cache SonarQube Cloud packages
+        uses: actions/cache@v5
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarQube Cloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v5
+        with:
+          path: ${{ runner.temp }}\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarQube Cloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
+      - name: Build and analyze (SonarQube)
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"ICTAce_ICTAce.Oqtane.Application.Template" /o:"ictace" /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet build ICTAce.Oqtane.Application.Template.slnx
+          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
