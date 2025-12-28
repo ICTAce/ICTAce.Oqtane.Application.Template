@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<ItemGroup>
+		<PackageReference Include="bunit" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Oqtane.Client" />
+		<PackageReference Include="Oqtane.Shared" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Client\SampleCompany.SampleModule.Client.csproj" />
+	</ItemGroup>
+
+</Project>

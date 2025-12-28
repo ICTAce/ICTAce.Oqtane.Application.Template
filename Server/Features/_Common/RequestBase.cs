@@ -1,0 +1,8 @@
+namespace SampleCompany.SampleModule.Features.Common;
+
+public abstract record RequestBase
+{
+    [Required(ErrorMessage = "ModuleId is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "ModuleId must be greater than 0")]
+    public int ModuleId { get; set; }
+}
