@@ -46,10 +46,10 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore ICTAce.FileHub.slnx
+        run: dotnet restore ICTAce.Oqtane.Application.Template.slnx
 
       - name: Build solution
-        run: dotnet build ICTAce.FileHub.slnx --configuration Release --no-restore
+        run: dotnet build ICTAce.Oqtane.Application.Template.slnx --configuration Release --no-restore
 
       - name: Verify analyzer enforcement
         run: |
@@ -83,13 +83,13 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore Server.Tests/ICTAce.FileHub.Server.Tests.csproj
+        run: dotnet restore Server.Tests/SampleCompany.SampleModule.Server.Tests.Tests.csproj
 
       - name: Build test project
-        run: dotnet build Server.Tests/ICTAce.FileHub.Server.Tests.csproj --configuration Release --no-restore
+        run: dotnet build Server.Tests/SampleCompany.SampleModule.Server.Tests.Tests.csproj --configuration Release --no-restore
 
       - name: Run server tests
-        run: dotnet test Server.Tests/ICTAce.FileHub.Server.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=server-test-results.trx"
+        run: dotnet test Server.Tests/SampleCompany.SampleModule.Server.Tests.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=server-test-results.trx"
         continue-on-error: true
 
       - name: Upload server test results
@@ -123,13 +123,13 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore Client.Tests/ICTAce.FileHub.Client.Tests.csproj
+        run: dotnet restore Client.Tests/SampleCompany.SampleModule.Client.Tests.csproj
 
       - name: Build test project
-        run: dotnet build Client.Tests/ICTAce.FileHub.Client.Tests.csproj --configuration Release --no-restore
+        run: dotnet build Client.Tests/SampleCompany.SampleModule.Client.Tests.csproj --configuration Release --no-restore
 
       - name: Run client component tests
-        run: dotnet test Client.Tests/ICTAce.FileHub.Client.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=client-test-results.trx"
+        run: dotnet test Client.Tests/SampleCompany.SampleModule.Client.Tests.csproj --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=client-test-results.trx"
         continue-on-error: true
 
       - name: Upload client test results
